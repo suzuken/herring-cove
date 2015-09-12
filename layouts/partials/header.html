@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta itemprop="name" content="{{ .Title }}">
-    <meta itemprop="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}">
+    <meta itemprop="description" content="{{ if .Site.Params.Description }}{{ .Site.Params.Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}">
     {{ $baseUrl:= .Site.BaseURL }}
     {{ with .Params.images }}{{ range first 6 . }}
       <meta itemprop="image" content="{{ printf "%s%s" $baseUrl . }}">
@@ -14,7 +14,7 @@
     {{ end }}
 
     <meta property="og:title" content="{{ .Title }}" />
-    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}" />
+    <meta property="og:description" content="{{ if .Site.Params.Description }}{{ .Site.Params.Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}" />
     <meta property="og:type" content="{{ if .Params.type }}{{ .Params.type }}{{ else }}website{{ end }}" />
     <meta property="og:url" content="{{ .Permalink }}" />
     {{ with .Params.images }}{{ range first 6 . }}
@@ -69,7 +69,7 @@
 
     <!-- Twitter Card data -->
     <meta name="twitter:title" content="{{ .Title }}"/>
-    <meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}"/>
+    <meta name="twitter:description" content="{{ if .Site.Params.Description }}{{ .Site.Params.Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}"/>
     {{ with .Site.Params.social.twitter }}<meta name="twitter:site" content="@{{ . }}"/>{{ end }}
     {{ if isset .Params "author" }}
       {{ $author := index .Site.Params.authors .Params.author }}
@@ -116,7 +116,7 @@
       <!-- Sidebar -->
       <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-          <img src="{{ .Site.Params.ProfilePicture }}" />
+          <img src="{{ .Site.Params.ProfilePicture }}" width=250/>
           <li class="sidebar-brand"><a href="{{ .Site.BaseURL }}/"><h1 class="brand">{{ .Site.Title }}</h1></a><h3>{{ .Site.Params.Description }}</h3></li>
           <hr />
           {{range $key, $element := .Site.Params.links}}
@@ -124,11 +124,13 @@
           {{ end }}
           <hr />
           <div id="social-wrapper">
-            {{ with .Site.Params.twitter }}<li> <a href="{{.}}"><i class="fa fa-twitter-square"></i> @twitter</a></li>{{end}}
-            {{ with .Site.Params.linkedin }}<li> <a href="{{ . }}"><i class="fa fa-linkedin-square"></i> linkedin</a> </li>{{end}}
-            {{ with .Site.Params.facebook }}<li> <a href="{{ . }}"><i class="fa fa-facebook-square"></i> facebook</a></li>{{end}}
-            {{ with .Site.Params.github }}<li> <a href="{{ . }}"><i class="fa fa-github-square"></i> github</a> </li>{{end}}
+            {{ with .Site.Params.social.twitter }}<li> <a href="https://twitter.com/{{.}}"><i class="fa fa-twitter-square"></i> @{{.}}</a></li>{{end}}
+            {{ with .Site.Params.social.facebook }}<li> <a href="https://facebook.com/{{ . }}"><i class="fa fa-facebook-square"></i> {{.}}</a></li>{{end}}
+            {{ with .Site.Params.social.github }}<li> <a href="https://github.com/{{ . }}"><i class="fa fa-github-square"></i> {{.}}</a> </li>{{end}}
+          </div>
+          <div id="instagram-wrapper">
+            <li>Photos from Instagram</li>
+            <script src="//instansive.com/widget/js/instansive.js"></script><iframe src="//instansive.com/widgets/9f943cd7b10f1934ee96a9e5d014f25e4b808c25.html" id="instansive_9f943cd7b1" name="instansive_9f943cd7b1"  scrolling="no" allowtransparency="true" class="instansive-widget" style="width: 100%; border: 0; overflow: hidden;"></iframe>
           </div>
         </ul>
       </div>
-      <div class="container">
