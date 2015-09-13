@@ -6,7 +6,7 @@
     <meta itemprop="description" content="{{ if .Site.Params.Description }}{{ .Site.Params.Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}">
     {{ $baseUrl:= .Site.BaseURL }}
     {{ with .Params.images }}{{ range first 6 . }}
-      <meta itemprop="image" content="{{ printf "%s%s" $baseUrl . }}">
+    <meta itemprop="image" content="{{ . | absURL }}">
     {{ end }}{{ end }}
     <meta itemprop="keywords" content="{{ range $plural, $terms := .Site.Taxonomies }}{{ range $term, $val := $terms }}{{ printf "%s," $term }}{{ end }}{{ end }}" />
     {{if .IsPage}}
@@ -18,7 +18,7 @@
     <meta property="og:type" content="{{ if .Params.type }}{{ .Params.type }}{{ else }}website{{ end }}" />
     <meta property="og:url" content="{{ .Permalink }}" />
     {{ with .Params.images }}{{ range first 6 . }}
-    <meta property="og:image" content="{{ printf "%s%s" $baseUrl . }}" />
+    <meta property="og:image" content="{{ . | absURL }}" />
     {{ end }}{{ end }}
 
     <!-- Optional Open Graph Markup -->
@@ -62,7 +62,7 @@
     {{ with .Params.images }}
     <!-- Twitter summary card with large image must be at least 280x150px -->
       <meta name="twitter:card" content="summary_large_image"/>
-      <meta name="twitter:image" content="{{ $baseUrl }}{{ index . 0 }}"/>
+      <meta name="twitter:image" content="{{ index . 0 | absURL }}"/>
     {{ else }}
       <meta name="twitter:card" content="summary"/>
     {{ end }}
@@ -118,13 +118,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a href="{{ .Site.BaseURL }}/"><p class="navbar-brand">{{ .Site.Title }}</p></a>
+            <a href="{{ .Site.BaseURL }}"><p class="navbar-brand">{{ .Site.Title }}</p></a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              {{ $baseUrl:= .Site.BaseURL }}
               {{range $key, $element := .Site.Params.links}}
-              <li><a href="{{ $baseUrl}}{{ $element }}">{{title $key }} </a></li>
+              <li><a href="{{ $element | absURL }}">{{title $key }}</a></li>
               {{ end }}
             </ul>
           </div><!--/.nav-collapse -->
@@ -134,10 +133,10 @@
       <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
           <img src="{{ .Site.Params.ProfilePicture }}" width=250/>
-          <li class="sidebar-brand"><a href="{{ .Site.BaseURL }}/"><h1 class="brand">{{ .Site.Title }}</h1></a><h3>{{ .Site.Params.Description }}</h3></li>
+          <li class="sidebar-brand"><a href="{{ .Site.BaseURL }}"><h1 class="brand">{{ .Site.Title }}</h1></a><h3>{{ .Site.Params.Description }}</h3></li>
           <hr />
           {{range $key, $element := .Site.Params.links}}
-          <li><a href="{{ $baseUrl }}{{ $element }}">{{title $key }} </a></li>
+          <li><a href="{{ $element | absURL }}">{{title $key }}</a></li>
           {{ end }}
           <hr />
           <div id="social-wrapper">
